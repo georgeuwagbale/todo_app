@@ -2,14 +2,20 @@ import AddButton from "./AddButton.tsx";
 import Task from "./Task.tsx";
 import {useEffect, useState} from "react";
 
+interface Task{
+    id: string;
+    title: string;
+    description: string;
+}
 
 const Todo = () => {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [reload, setReload] = useState(false); // Add a new state variable
 
+    const defaultUrl = 'https://todoappbackend-156g1cm0.b4a.run/'
     // console.log(tasks)
     useEffect(() => {
-        fetch('http://localhost:3000/tasks')
+        fetch(`${defaultUrl}tasks`)
             .then(response => response.json())
             .then(data => setTasks(data));
     }, [reload]);

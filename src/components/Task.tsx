@@ -31,7 +31,8 @@ const Task = ({ title, index, description, onTaskUpdated, onTaskDeleted} : TaskP
             description: taskDescription
         };
 
-        const response = await fetch(`http://localhost:3000/tasks/${index}`, {
+        const defaultUrl = 'https://todoappbackend-156g1cm0.b4a.run/'
+        const response = await fetch(`${defaultUrl}tasks/${index}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -22,7 +22,9 @@ const AddButton = ({ onTaskAdded }: AddButtonProps) => {
             description: taskDescription
         };
 
-        const response = await fetch('http://localhost:3000/tasks', {
+        const defaultUrl = 'https://todoappbackend-156g1cm0.b4a.run/'
+
+        const response = await fetch(`${defaultUrl}tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
