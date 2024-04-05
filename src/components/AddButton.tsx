@@ -3,6 +3,7 @@ import closeIcon from '../assets/close.png';
 
 const AddButton = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
 
@@ -10,15 +11,34 @@ const AddButton = () => {
         setIsPopupOpen(!isPopupOpen);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`Task Name: ${taskName}, Task Description: ${taskDescription}`);
-        // You can now use the taskName and taskDescription variables to add the task
+        const taskData = {
+            name: taskName,
+            description: taskDescription
+        };
+
+        const response = await fetch('http://localhost:3000/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(taskData)
+        });
+
+        if (response.ok) {
+            // Clear the form and close the popup
+            setTaskName("");
+            setTaskDescription("");
+            togglePopup();
+        } else {
+            setIsErrorPopupOpen(true);
+        }
     };
 
     return (
         <div>
-            <button className="bg-[#293390] rounded-2xl text-center text-white text-[0.7rem] px-5 py-1" onClick={togglePopup}>
+            <button className="bg-[#293390] rounded-2xl text-center text-white text-[0.7rem] px-5 py-1 active:border active:border-[#293390] active:bg-white active:text-[#293390]" onClick={togglePopup}>
                 Add Task
             </button>
             {isPopupOpen && (
@@ -38,9 +58,20 @@ const AddButton = () => {
                             <input className="border rounded p-1" type="text" placeholder="Task description" value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)}/>
                         </div>
                         <div className="pt-3 flex justify-end">
-                            <button className="bg-[#293390] text-white rounded-full px-5 text-[0.8rem]" type="submit">Add</button>
+                            <button className="bg-[#293390] text-white rounded-full px-5 text-[0.8rem] active:border active:border-[#293390] active:bg-white active:text-[#293390]" type="submit">Add</button>
                         </div>
                     </form>
+                </div>
+            )}
+            {isErrorPopupOpen && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded">
+                        <button onClick={() => setIsErrorPopupOpen(false)}>
+                            <img className="h-4" src={closeIcon} alt=""/>
+                        </button>
+                        <h2>Error</h2>
+                        <p>Failed to submit task</p>
+                    </div>
                 </div>
             )}
         </div>

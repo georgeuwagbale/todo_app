@@ -5,6 +5,11 @@ export default {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      backgroundColor: ['active'], // add 'active' variant for backgroundColor
+    },
+  },
   plugins: [],
 }
 
