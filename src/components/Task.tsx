@@ -1,20 +1,37 @@
-import {useState} from "react";
+import { useState } from "react";
 
+import closeIcon from '../assets/close.png';
 interface TaskProps {
-    todo: string
+    todo: string;
 }
 
-const Task = ({todo}: TaskProps) => {
-    const [checked, setChecked] = useState(false);
-    console.log(checked)
+const Task = ({ todo } : TaskProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     return (
-        <div className="flex justify-between items-center p-3 rounded border border-gray-200 w-full">
-            <button>
-                <div className="flex flex-row gap-2">
-                    <input type="checkbox" className="mr-2 rounded-full bg-transparent" checked={checked} onClick={() => setChecked(!checked)}/>
+        <div className="w-full border p-3 rounded">
+            <div className="flex flex-row gap-2">
+                <input type="checkbox"/>
+                <div onClick={toggleModal} >
                     <p>{todo}</p>
                 </div>
-            </button>
+            </div>
+
+            {isModalOpen && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded">
+                        <button onClick={toggleModal}>
+                            <img className="h-4" src={closeIcon} alt=""/>
+                        </button>
+                        <h2>Task Details</h2>
+                        <p>{todo}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
