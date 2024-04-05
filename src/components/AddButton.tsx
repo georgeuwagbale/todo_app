@@ -11,7 +11,7 @@ const AddButton = () => {
         setIsPopupOpen(!isPopupOpen);
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         const taskData = {
             name: taskName,
