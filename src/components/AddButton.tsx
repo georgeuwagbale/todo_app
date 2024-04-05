@@ -1,7 +1,11 @@
 import { useState } from "react";
 import closeIcon from '../assets/close.png';
 
-const AddButton = () => {
+interface AddButtonProps {
+    onTaskAdded: () => void;
+}
+
+const AddButton = ({ onTaskAdded }: AddButtonProps) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
     const [taskName, setTaskName] = useState("");
@@ -14,7 +18,7 @@ const AddButton = () => {
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         const taskData = {
-            name: taskName,
+            title: taskName,
             description: taskDescription
         };
 
@@ -30,6 +34,7 @@ const AddButton = () => {
             // Clear the form and close the popup
             setTaskName("");
             setTaskDescription("");
+            onTaskAdded();
             togglePopup();
         } else {
             setIsErrorPopupOpen(true);
